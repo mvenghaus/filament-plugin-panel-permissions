@@ -6,8 +6,6 @@ namespace Mvenghaus\PanelPermissions;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Hofstein\BackendMagento2ProductFeed\Models\ProductFeed;
-use Hofstein\BackendMagento2ProductFeed\Policies\ProductFeedLazyPolicy;
 use Illuminate\Support\Facades\Gate;
 use Mvenghaus\PanelPermissions\Facades\Services\LazyPolicyService;
 use Mvenghaus\PanelPermissions\Facades\Services\ModelService;
@@ -24,7 +22,7 @@ class FilamentPlugin implements Plugin
     {
         $panel->authGuard(config('filament-panel-permissions.guard'));
 
-        //Gate::before(fn($user, $ability) => $user->hasRole(config('filament-panel-permissions.super_admin_role')) ?: null);
+        Gate::before(fn($user, $ability) => $user->hasRole(config('filament-panel-permissions.super_admin_role')) ?: null);
 
         $this->registerPolicies($panel);
     }
@@ -56,3 +54,4 @@ class FilamentPlugin implements Plugin
         return app(static::class);
     }
 }
+
