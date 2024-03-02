@@ -1,0 +1,48 @@
+{
+  "name": "mvenghaus/filament-plugin-panel-permissions",
+  "description": "Manage your roles & permissions in your filament panel ",
+  "keywords": [
+    "mvenghaus",
+    "laravel",
+    "filament",
+    "spatie",
+    "permissions",
+    "panel"
+  ],
+  "homepage": "https://github.com/mvenghaus/filament-plugin-panel-permissions",
+  "support": {
+    "issues": "https://github.com/mvenghaus/filament-plugin-panel-permissions",
+    "source": "https://github.com/mvenghaus/filament-plugin-panel-permissions"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marcus Venghaus",
+      "email": "marcus.venghaus@inklammern.de",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "filament/filament": "^3.2",
+    "spatie/laravel-package-tools": "^1.0",
+    "spatie/laravel-permission": "^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mvenghaus\\PanelPermissions\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Mvenghaus\\PanelPermissions\\ServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

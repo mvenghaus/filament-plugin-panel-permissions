@@ -1,0 +1,74 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+{{ use authModelFQCN }}
+{{ use modelFQCN }}
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class {{ policyClassName }}
+{
+    use HandlesAuthorization;
+
+    public function viewAny({{ authModelName }} ${{ authModelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ viewAny }}');
+    }
+
+    public function view({{ authModelName }} ${{ authModelVariable }}, {{ modelName }} ${{ modelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ view }}');
+    }
+
+    public function create({{ authModelName }} ${{ authModelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ create }}');
+    }
+
+    public function update({{ authModelName }} ${{ authModelVariable }}, {{ modelName }} ${{ modelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ update }}');
+    }
+
+    public function delete({{ authModelName }} ${{ authModelVariable }}, {{ modelName }} ${{ modelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ delete }}');
+    }
+
+    public function deleteAny({{ authModelName }} ${{ authModelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ deleteAny }}');
+    }
+
+    public function forceDelete({{ authModelName }} ${{ authModelVariable }}, {{ modelName }} ${{ modelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ forceDelete }}');
+    }
+
+    public function forceDeleteAny({{ authModelName }} ${{ authModelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ forceDeleteAny }}');
+    }
+
+    public function restore({{ authModelName }} ${{ authModelVariable }}, {{ modelName }} ${{ modelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ restore }}');
+    }
+
+    public function restoreAny({{ authModelName }} ${{ authModelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ restoreAny }}');
+    }
+
+    public function replicate({{ authModelName }} ${{ authModelVariable }}, {{ modelName }} ${{ modelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ replicate }}');
+    }
+
+    public function reorder({{ authModelName }} ${{ authModelVariable }}): bool
+    {
+        return ${{ authModelVariable }}->can('{{ reorder }}');
+    }
+}
