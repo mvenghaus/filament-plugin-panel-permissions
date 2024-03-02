@@ -1,6 +1,6 @@
 # Filament Plugin - Panel Permissions
 
-## This is a working concept and should be used in production!
+## This is a working concept and should NOT be used in production!
 
 I tried the available plugins to handle permissions in Filament. But none of them could fulfil my wishes.
 
