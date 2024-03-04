@@ -4,7 +4,7 @@ namespace Mvenghaus\PanelPermissions\Services;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use ReflectionObject;
+use ReflectionClass;
 
 class LazyPolicyService
 {
@@ -13,18 +13,18 @@ class LazyPolicyService
         return collect(explode("\\", $modelFQCN))
             ->slice(0, -2)
             ->add('Policies')
-            ->add((new ReflectionObject(new $modelFQCN))->getShortName() . 'LazyPolicy')
+            ->add(class_basename($modelFQCN) . 'LazyPolicy')
             ->join("\\");
     }
 
     public function getFilePath(string $modelFQCN): string
     {
-        $reflectionModel = new ReflectionObject(new $modelFQCN);
+        $reflectionClass = new ReflectionClass($modelFQCN);
 
-        return Str::of($reflectionModel->getFileName())
+        return Str::of($reflectionClass->getFileName())
             ->dirname()
             ->append('/../Policies/')
-            ->append($reflectionModel->getShortName())
+            ->append($reflectionClass->getShortName())
             ->append('LazyPolicy.php')
             ->toString();
     }

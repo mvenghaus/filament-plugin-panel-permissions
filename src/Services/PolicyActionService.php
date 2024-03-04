@@ -2,17 +2,44 @@
 
 namespace Mvenghaus\PanelPermissions\Services;
 
-use Illuminate\Support\Collection;
 use ReflectionObject;
-use Mvenghaus\PanelPermissions\Facades\Services\PolicyService;
+use Illuminate\Support\Collection;
+use Mvenghaus\PanelPermissions\Facades\Services\LazyPolicyService;
 
 class PolicyActionService
 {
+    public function get(string $modelFQCN): Collection
+    {
+        if (LazyPolicyService::hasFile($modelFQCN)) {
+            return $this->determinePolicyActions(LazyPolicyService::getFQCN($modelFQCN));
+        }
+
+        return $this->getDefault();
+    }
+
+    public function getDefault(): Collection
+    {
+        return collect([
+            'viewAny',
+            'view',
+            'create',
+            'update',
+            'delete',
+            'deleteAny',
+            'forceDelete',
+            'forceDeleteAny',
+            'restore',
+            'restoreAny',
+            'replicate',
+            'reorder'
+        ]);
+    }
+
     public function determinePolicyActions(string $policyFQCN): Collection
     {
         $reflectionModel = new ReflectionObject(new $policyFQCN);
 
-        $defaultPolicyActions = PolicyService::getDefaultActions();
+        $defaultPolicyActions = $this->getDefault();
 
         $policyActions = collect();
         foreach ($reflectionModel->getMethods() as $method) {

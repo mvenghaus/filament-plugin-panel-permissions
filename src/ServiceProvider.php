@@ -26,7 +26,6 @@ class ServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-
         parent::packageBooted();
     }
 }

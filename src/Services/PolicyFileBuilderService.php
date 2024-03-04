@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Mvenghaus\PanelPermissions\Services;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use Mvenghaus\PanelPermissions\Facades\Services\PolicyService;
+use Mvenghaus\PanelPermissions\Facades\Services\PolicyActionService;
 use Mvenghaus\PanelPermissions\Facades\Services\PermissionService;
-use ReflectionObject;
 
 class PolicyFileBuilderService
 {
@@ -17,7 +16,7 @@ class PolicyFileBuilderService
         $policyContent = File::get(__DIR__."/../../stubs/Policy.stub");
 
         $modelFQCN = "\\".$modelFQCN;
-        $modelName = (new ReflectionObject(new $modelFQCN))->getShortName();
+        $modelName = class_basename($modelFQCN);
         $modelVariable = 'model';
 
         return strtr(
@@ -31,8 +30,8 @@ class PolicyFileBuilderService
                 'authModelVariable' => PolicyService::getAuthModelVariable(),
                 'modelName' => $modelName,
                 'modelVariable' => $modelVariable,
-                ...PolicyService::getDefaultActions()
-                    ->mapWithKeys(fn(string $action) => [$action => PermissionService::getActionName($action, $modelFQCN)])
+                ...PolicyActionService::getDefault()
+                    ->mapWithKeys(fn(string $action) => [$action => PermissionService::getName($action, $modelFQCN)])
             ])
                 ->mapWithKeys(fn(string $value, string $key) => ["{{ {$key} }}" => $value])
                 ->all()

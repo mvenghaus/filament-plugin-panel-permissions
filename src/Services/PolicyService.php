@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace Mvenghaus\PanelPermissions\Services;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use ReflectionObject;
+use ReflectionClass;
 
 class PolicyService
 {
     public function getFilePath(string $modelFQCN): string
     {
-        $reflectionModel = new ReflectionObject(new $modelFQCN);
+        $reflectionClass = new ReflectionClass($modelFQCN);
 
         return Str::of(base_path('app/Policies/'))
-            ->append($reflectionModel->getNamespaceName())
+            ->append($reflectionClass->getNamespaceName())
             ->replace('\\', '/')
             ->append("/")
-            ->append($reflectionModel->getShortName())
+            ->append($reflectionClass->getShortName())
             ->append('Policy.php')
             ->toString();
     }
@@ -32,13 +31,13 @@ class PolicyService
     public function getNamespace(string $modelFQCN): string
     {
         return Str::of("App\\Policies\\")
-            ->append((new ReflectionObject(new $modelFQCN))->getNamespaceName())
+            ->append((new ReflectionClass($modelFQCN))->getNamespaceName())
             ->toString();
     }
 
     public function getClassName(string $modelFQCN): string
     {
-        return (new ReflectionObject(new $modelFQCN))->getShortName() . "Policy";
+        return class_basename($modelFQCN) . "Policy";
     }
 
     public function getFQCN(string $modelFQCN): string
@@ -56,8 +55,7 @@ class PolicyService
 
     public function getAuthModelName(): string
     {
-        $authModelFQCN = $this->getAuthModelFQCN();
-        return (new ReflectionObject(new $authModelFQCN))->getShortName();
+        return class_basename($this->getAuthModelFQCN());
     }
 
     public function getAuthModelVariable(): string
@@ -65,23 +63,5 @@ class PolicyService
         return Str::of($this->getAuthModelName())
             ->lcfirst()
             ->toString();
-    }
-
-    public function getDefaultActions(): Collection
-    {
-        return collect([
-            'viewAny',
-            'view',
-            'create',
-            'update',
-            'delete',
-            'deleteAny',
-            'forceDelete',
-            'forceDeleteAny',
-            'restore',
-            'restoreAny',
-            'replicate',
-            'reorder'
-        ]);
     }
 }

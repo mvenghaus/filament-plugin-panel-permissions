@@ -61,15 +61,8 @@ class SyncCommand extends Command
 
     private function generatePermissions(string $modelFQCN): void
     {
-        $modelPermissions = PolicyService::getDefaultActions()
-            ->map(fn(string $action) => PermissionService::getActionName($action, $modelFQCN));
-
-        if (LazyPolicyService::hasFile($modelFQCN)) {
-            $modelPermissions = PolicyActionService::determinePolicyActions(LazyPolicyService::getFQCN($modelFQCN))
-                ->map(fn(string $action) => PermissionService::getActionName($action, $modelFQCN));
-        }
-
-        $modelPermissions
+        PolicyActionService::get($modelFQCN)
+            ->map(fn(string $action) => PermissionService::getName($action, $modelFQCN))
             ->each(function (string $name) {
                 Permission::firstOrCreate([
                     'name' => $name,
