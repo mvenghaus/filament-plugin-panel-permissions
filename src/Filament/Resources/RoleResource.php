@@ -136,7 +136,7 @@ class RoleResource extends Resource
                     ->afterStateUpdated(function(Component $component, Get $get, Set $set) use ($permissionIds) {
                         $selectedPermissionIds = [];
                         if ($get('toggle')) {
-                            $selectedPermissionIds = $permissionIds;
+                            $selectedPermissionIds = $permissionIds->all();
                         }
 
                         $rolePermissionIds = collect($get('../permissions'))
