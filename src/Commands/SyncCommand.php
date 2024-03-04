@@ -27,9 +27,10 @@ class SyncCommand extends Command
     {
         foreach (Filament::getPanels() as $panel) {
             foreach ($panel->getResources() as $resource) {
-                $modelFQCN = (new $resource)->getModel();
 
-                $this->generatePolicyFile($modelFQCN);
+                $modelFQCN = $resource::getModel();
+
+                $this->generatePolicyFiles($modelFQCN);
 
                 $this->generatePermissions($modelFQCN);
             }
@@ -40,7 +41,7 @@ class SyncCommand extends Command
         return 0;
     }
 
-    private function generatePolicyFile(string $modelFQCN): void
+    private function generatePolicyFiles(string $modelFQCN): void
     {
         if (ModelService::isVendor($modelFQCN) &&
             LazyPolicyService::hasFile($modelFQCN)
