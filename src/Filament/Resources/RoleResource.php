@@ -58,11 +58,11 @@ class RoleResource extends Resource
                                 ->default(config('filament-panel-permissions.guard_name'))
                                 ->options(
                                     fn() => collect(config('auth.guards') ?? [])
+                                        ->filter(fn(array $data, string $guard) => $guard === 'filament')
                                         ->mapWithKeys(fn(array $data, string $guard) => [$guard => $guard])
                                 )
                                 ->required()
                         ])
-                        ->columns(),
                 ])
         ];
     }
