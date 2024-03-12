@@ -63,6 +63,7 @@ class RoleResource extends Resource
                                 )
                                 ->required()
                         ])
+                        ->columns()
                 ])
         ];
     }
